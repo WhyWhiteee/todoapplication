@@ -1,24 +1,15 @@
-package com.example.whywhiteee.views;
+package com.example.whywhiteee.Views;
 
-import com.example.whywhiteee.Tasks;
-import com.example.whywhiteee.TasksRepository;
+import com.example.whywhiteee.Models.Tasks;
+import com.example.whywhiteee.Repositories.TasksRepository;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabSheet;
-import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.Route;
-import org.springframework.scheduling.config.Task;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Route("")

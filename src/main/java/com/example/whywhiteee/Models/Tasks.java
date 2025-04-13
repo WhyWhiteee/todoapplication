@@ -1,4 +1,4 @@
-package com.example.whywhiteee;
+package com.example.whywhiteee.Models;
 
 import jakarta.persistence.*;
 import lombok.*;
