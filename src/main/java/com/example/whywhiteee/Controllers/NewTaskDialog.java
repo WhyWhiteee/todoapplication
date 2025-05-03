@@ -1,24 +1,33 @@
 package com.example.whywhiteee.Controllers;
 
 import com.example.whywhiteee.Models.Tasks;
-import com.example.whywhiteee.Services.TaskService;
+import com.example.whywhiteee.Models.Users;
+import com.example.whywhiteee.Services.TasksService;
+import com.example.whywhiteee.Services.UsersService;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class NewTaskDialog extends Dialog {
 
-    public NewTaskDialog(TaskService taskService, Runnable onTaskSaved) {
+    public NewTaskDialog(TasksService taskService, UsersService usersService, Runnable onTaskSaved) {
         setHeaderTitle("Новая задача");
-
         TextField titleField = new TextField("Название задачи");
         TextField descriptionField = new TextField("Описание задачи");
         DatePicker datePicker = new DatePicker("Срок выполнения");
         LocalDate currentDate = LocalDate.now();
+
+        List<Users> users = usersService.getAllUsers();
+        ComboBox<Users> comboBoxExecutor = new ComboBox<>("Выберите исполнителя");
+        comboBoxExecutor.setItems(users);
+        comboBoxExecutor.setItemLabelGenerator(Users::getName);
+
 
         Button saveButton = new Button("Сохранить", event -> {
             if (!titleField.getValue().trim().isBlank() && !descriptionField.getValue().trim().isBlank()) {
@@ -36,7 +45,7 @@ public class NewTaskDialog extends Dialog {
         });
         Button cancelButton = new Button("Отмена", e -> close());
         getFooter().add(cancelButton, saveButton);
-        VerticalLayout layout = new VerticalLayout(titleField, descriptionField, datePicker);
+        VerticalLayout layout = new VerticalLayout(titleField, descriptionField, datePicker, comboBoxExecutor);
         add(layout);
     }
 }

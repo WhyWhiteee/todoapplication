@@ -1,7 +1,8 @@
 package com.example.whywhiteee.Controllers;
 
 import com.example.whywhiteee.Models.Tasks;
-import com.example.whywhiteee.Services.TaskService;
+import com.example.whywhiteee.Services.TasksService;
+import com.example.whywhiteee.Services.UsersService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
@@ -16,10 +17,12 @@ import java.util.List;
 @Route("")
 public class MainView extends VerticalLayout {
 
-    private final transient TaskService taskService;
+    private final transient TasksService tasksService;
+    private final transient UsersService usersService;
 
-    public MainView(TaskService taskService) {
-        this.taskService = taskService;
+    public MainView(TasksService taskService, UsersService usersService) {
+        this.tasksService = taskService;
+        this.usersService = usersService;
         setupComponents();
     }
 
@@ -32,16 +35,16 @@ public class MainView extends VerticalLayout {
 
         //кнопка для создания новой задачи
         Button createTaskButton = new Button("Создать задачу", e -> {
-            NewTaskDialog newTaskDialog = new NewTaskDialog(taskService, () -> getUI().ifPresent(ui -> ui.getPage().reload()));
+            NewTaskDialog newTaskDialog = new NewTaskDialog(tasksService, usersService, () -> getUI().ifPresent(ui -> ui.getPage().reload()));
             newTaskDialog.open();
         });
         add(createTaskButton);
 
         //tabs
         TabSheet tabSheet = new TabSheet();
-        tabSheet.add("Доступные", new VerticalLayout(getTasks(taskService.getTasksByCompletedAndArchived(false), "Доступные")));
-        tabSheet.add("Завершенные", new VerticalLayout(getTasks(taskService.getTasksByCompletedAndArchived(true), "Завершенные")));
-        tabSheet.add("Архив", new VerticalLayout(getTasks(taskService.getTasksByArchived(true), "Архив")));
+        tabSheet.add("Доступные", new VerticalLayout(getTasks(tasksService.getTasksByCompletedAndArchived(false), "Доступные")));
+        tabSheet.add("Завершенные", new VerticalLayout(getTasks(tasksService.getTasksByCompletedAndArchived(true), "Завершенные")));
+        tabSheet.add("Архив", new VerticalLayout(getTasks(tasksService.getTasksByArchived(true), "Архив")));
         add(tabSheet);
     }
 
@@ -70,7 +73,7 @@ public class MainView extends VerticalLayout {
                 completeButton.getStyle().set("background", "transparent").set("cursor", "pointer");
                 completeButton.addClickListener(event -> {
                     task.setCompleted(!task.getCompleted());
-                    taskService.saveTask(task);
+                    tasksService.saveTask(task);
                     //обновление ui
                     getUI().ifPresent(ui -> ui.getPage().reload());
                 });
@@ -80,7 +83,7 @@ public class MainView extends VerticalLayout {
                 restoreButton.getStyle().set("background", "transparent").set("cursor", "pointer");
                 restoreButton.addClickListener(event -> {
                     task.setArchived(false);
-                    taskService.saveTask(task);
+                    tasksService.saveTask(task);
                     getUI().ifPresent(ui -> ui.getPage().reload());
                 });
                 layout.add(restoreButton);
@@ -92,10 +95,10 @@ public class MainView extends VerticalLayout {
             deleteButton.getStyle().set("background", "transparent").set("cursor", "pointer");
             deleteButton.addClickListener(event -> {
                 if (task.getArchived()) {
-                    taskService.deleteTask(task);
+                    tasksService.deleteTask(task);
                 } else {
                     task.setArchived(true);
-                    taskService.saveTask(task);
+                    tasksService.saveTask(task);
                 }
                 //обновление ui
                 getUI().ifPresent(ui -> ui.getPage().reload());

@@ -2,14 +2,14 @@ package com.example.whywhiteee.Services.Impl;
 
 import com.example.whywhiteee.Models.Tasks;
 import com.example.whywhiteee.Repositories.TasksRepository;
-import com.example.whywhiteee.Services.TaskService;
+import com.example.whywhiteee.Services.TasksService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 @RequiredArgsConstructor
-public class TaskServiceImpl implements TaskService {
+public class TasksServiceImpl implements TasksService {
 
     private final TasksRepository tasksRepository;
 
