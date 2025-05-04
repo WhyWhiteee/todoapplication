@@ -27,7 +27,9 @@ public class NewTaskDialog extends Dialog {
         ComboBox<Users> comboBoxExecutor = new ComboBox<>("Выберите исполнителя");
         comboBoxExecutor.setItems(users);
         comboBoxExecutor.setItemLabelGenerator(Users::getName);
-
+        ComboBox<Users> comboBoxCreator = new ComboBox<>("Выберите создателя");
+        comboBoxCreator.setItems(users);
+        comboBoxCreator.setItemLabelGenerator(Users::getName);
 
         Button saveButton = new Button("Сохранить", event -> {
             if (!titleField.getValue().trim().isBlank() && !descriptionField.getValue().trim().isBlank()) {
@@ -38,6 +40,8 @@ public class NewTaskDialog extends Dialog {
                 task.setArchived(false);
                 task.setDeadline(datePicker.getValue());
                 task.setCreateDate(currentDate);
+                task.setExecutor(comboBoxExecutor.getValue());
+                task.setCreator(comboBoxCreator.getValue());
                 taskService.saveTask(task);
                 onTaskSaved.run();
                 close();
@@ -45,7 +49,7 @@ public class NewTaskDialog extends Dialog {
         });
         Button cancelButton = new Button("Отмена", e -> close());
         getFooter().add(cancelButton, saveButton);
-        VerticalLayout layout = new VerticalLayout(titleField, descriptionField, datePicker, comboBoxExecutor);
+        VerticalLayout layout = new VerticalLayout(titleField, descriptionField, datePicker, comboBoxCreator, comboBoxExecutor);
         add(layout);
     }
 }

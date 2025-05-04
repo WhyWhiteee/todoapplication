@@ -22,6 +22,12 @@ public class Tasks {
     private Boolean archived;
     private LocalDate deadline;
     private LocalDate createDate;
+    @ManyToOne
+    @JoinColumn(name = "executor_id")
+    private Users executor;
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
+    private Users creator;
 
     @Override
     public final boolean equals(Object o) {

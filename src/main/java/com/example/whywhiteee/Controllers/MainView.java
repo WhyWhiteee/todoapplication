@@ -62,6 +62,9 @@ public class MainView extends VerticalLayout {
         grid.addColumn(task -> task.getCreateDate() != null
                 ? task.getCreateDate().format(formatter) : "").setHeader("Дата создания").setAutoWidth(true);
 
+        grid.addColumn(tasks -> tasks.getCreator().getName()).setHeader("Создатель").setAutoWidth(true);
+        grid.addColumn(tasks -> tasks.getExecutor().getName()).setHeader("Исполнитель").setAutoWidth(true);
+
         grid.addColumn(new ComponentRenderer<>(task -> {
             VerticalLayout layout = new VerticalLayout();
             layout.getStyle().set("gap", "5px");
